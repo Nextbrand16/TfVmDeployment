@@ -52,3 +52,4 @@ module "vm" {
 
   depends_on = [module.resource_group]
 }
+
