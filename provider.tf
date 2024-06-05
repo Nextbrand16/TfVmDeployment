@@ -9,38 +9,43 @@ terraform {
 
 provider "azurerm" {
   features {}
+
+  tenant_id       = "7fa622ca-d3b0-4a0b-9a1f-544d8b945269"
+  subscription_id = "69ea728e-da4b-41a7-99ff-8e84c2384106" # Replace with your subscription ID
+  #client_id       = "your_client_id"       # Replace with your client ID
+  #client_secret   = "your_client_secret"   # Replace with your client secret
 }
 
 data "azurerm_client_config" "current" {}
 
 
-  # Specify the Azure subscription ID, tenant ID, client ID, and client secret
-  #subscription_id = var.ARM_SUBSCRIPTION_ID
-  #tenant_id       = var.ARM_TENANT_ID
-  #client_id       = var.ARM_CLIENT_ID
-  #client_secret   = var.ARM_CLIENT_SECRET
+# Specify the Azure subscription ID, tenant ID, client ID, and client secret
+#subscription_id = var.ARM_SUBSCRIPTION_ID
+#tenant_id       = var.ARM_TENANT_ID
+#client_id       = var.ARM_CLIENT_ID
+#client_secret   = var.ARM_CLIENT_SECRET
 
-  #subscription_id = env("ARM_SUBSCRIPTION_ID")
-  #tenant_id       = env("ARM_TENANT_ID")
-  #client_id       = env("ARM_CLIENT_ID")
-  #client_secret   = env("ARM_CLIENT_SECRET")
+#subscription_id = env("ARM_SUBSCRIPTION_ID")
+#tenant_id       = env("ARM_TENANT_ID")
+#client_id       = env("ARM_CLIENT_ID")
+#client_secret   = env("ARM_CLIENT_SECRET")
 
 
 
-  #Get-ChildItem Env:
+#Get-ChildItem Env:
 
-  # Specify the version of the Azure provider
- # version = ">=2.0, <3.0"
+# Specify the version of the Azure provider
+# version = ">=2.0, <3.0"
 
-  # Specify the Azure environment
- # environment = var.environment
+# Specify the Azure environment
+# environment = var.environment
 
-  # Specify the location of the Azure Resource Manager instance
-  # You can also set it globally by using the ARM_LOCATION environment variable
- # arm_location = var.arm_location
+# Specify the location of the Azure Resource Manager instance
+# You can also set it globally by using the ARM_LOCATION environment variable
+# arm_location = var.arm_location
 
-  # Specify additional settings as needed, such as resource pool settings, etc.
-  # See the Azure provider documentation for available options: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+# Specify additional settings as needed, such as resource pool settings, etc.
+# See the Azure provider documentation for available options: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 
 /*
 

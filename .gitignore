@@ -6,6 +6,7 @@
 *.txt
 .terraform/
 tfplan
+!/deployments/
 
 #To ignore all items in source
 # /[Ss]rc/* 
