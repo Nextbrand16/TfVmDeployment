@@ -77,3 +77,4 @@ resource "azurerm_backup_protected_vm" "example" {
   backup_policy_id    = data.azurerm_backup_policy_vm.example.id
 
   depends_on = [module.vm]
+}
