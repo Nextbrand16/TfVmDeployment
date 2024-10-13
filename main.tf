@@ -17,12 +17,12 @@ data "azurerm_subnet" "subnet" {
 }
 
 data "azurerm_key_vault" "keyault" {
-  name                = "administrativepword"
-  resource_group_name = var.keyRG
+  name                = var.keyvault_name
+  resource_group_name = "RG-KV"
 }
 
 data "azurerm_key_vault_secret" "vm_admin_password" {
-  name         = "password_secret_name"
+  name         = "password-secret-name"
   key_vault_id = data.azurerm_key_vault.keyault.id
 }
 
@@ -47,7 +47,7 @@ module "vm" {
   admin_username      = var.vm_username
   admin_password      = local.Admin_password
   os_disk_gb          = each.value.os_disk_gb
-  data_disks          = each.value.data_disks
+  #data_disks          = each.value.data_disks
   tags                = merge(module.common_tags.tags, each.value.tags)
 
   depends_on = [module.resource_group]
@@ -56,25 +56,36 @@ module "vm" {
 
 
 # Data sources for Recovery Services vault and backup policy
-data "azurerm_recovery_services_vault" "example" {
-  name                = var.recovery_services_vault_name
-  resource_group_name = var.recovery_services_vault_resource_group_name
+# data "azurerm_recovery_services_vault" "example" {
+#   name                = var.recovery_services_vault_name
+#   resource_group_name = var.recovery_services_vault_resource_group_name
+# }
+
+# data "azurerm_backup_policy_vm" "example" {
+#   name                = var.backup_policy_name
+#   resource_group_name = data.azurerm_recovery_services_vault.example.resource_group_name
+#   recovery_vault_name = data.azurerm_recovery_services_vault.example.name
+#}
+
+# # VM Backup configuration
+# resource "azurerm_backup_protected_vm" "example" {
+#   for_each = var.vms
+
+#   resource_group_name = data.azurerm_recovery_services_vault.example.resource_group_name
+#   recovery_vault_name = data.azurerm_recovery_services_vault.example.name
+#   source_vm_id        = module.vm[each.key].vm_id
+#   backup_policy_id    = data.azurerm_backup_policy_vm.example.id
+
+#   depends_on = [module.vm]
+# }
+
+
+
+  module "azure_monitor" {
+  source = "./modules/azure_monitor"
+
+  action_groups         = var.action_groups
+  metric_alerts         = var.metric_alerts
+  #scheduled_query_rules = var.scheduled_query_rules
 }
 
-data "azurerm_backup_policy_vm" "example" {
-  name                = var.backup_policy_name
-  resource_group_name = data.azurerm_recovery_services_vault.example.resource_group_name
-  recovery_vault_name = data.azurerm_recovery_services_vault.example.name
-}
-
-# VM Backup configuration
-resource "azurerm_backup_protected_vm" "example" {
-  for_each = var.vms
-
-  resource_group_name = data.azurerm_recovery_services_vault.example.resource_group_name
-  recovery_vault_name = data.azurerm_recovery_services_vault.example.name
-  source_vm_id        = module.vm[each.key].vm_id
-  backup_policy_id    = data.azurerm_backup_policy_vm.example.id
-
-  depends_on = [module.vm]
-}
