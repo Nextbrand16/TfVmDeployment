@@ -1,48 +1,52 @@
 variable "name" {
-  description = "VM name"
+  description = "The name of the virtual machine"
   type        = string
 }
 
 variable "size" {
-  description = "VM size"
+  description = "The size of the virtual machine"
   type        = string
 }
 
 variable "location" {
-  description = "Azure region"
+  description = "The location of the virtual machine"
   type        = string
 }
 
 variable "resource_group_name" {
-  description = "Resource Group name"
+  description = "The name of the resource group"
   type        = string
 }
 
 variable "subnet_id" {
-  description = "Subnet ID"
+  description = "The subnet ID for the virtual machine"
   type        = string
 }
 
 variable "admin_username" {
-  description = "VM admin username"
+  description = "The admin username for the virtual machine"
   type        = string
-  sensitive   = true
 }
 
 variable "admin_password" {
-  description = "VM admin password"
+  description = "The admin password for the virtual machine"
   type        = string
-  sensitive   = true
 }
 
 variable "os_disk_gb" {
-  description = "OS disk size in GB"
+  description = "The size of the OS disk in GB"
   type        = number
-  default     = 128
+}
+
+variable "data_disks" {
+  description = "List of data disks configurations"
+  type = list(object({
+    disk_size_gb = number
+  }))
+  default = []
 }
 
 variable "tags" {
-  description = "Resource tags"
+  description = "Tags to be applied to the resources"
   type        = map(string)
-  default     = {}
 }
