@@ -10,7 +10,7 @@ tfplan
 
 #To ignore all items in source
 # /[Ss]rc/* 
-
+#
 # #Do not ignore the items below
 # !/[Ss]rc/images/
 # !/[Ss]rc/intlTelInput/
