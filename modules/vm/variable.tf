@@ -1,52 +1,79 @@
 variable "name" {
-  description = "The name of the virtual machine"
   type        = string
-}
-
-variable "size" {
-  description = "The size of the virtual machine"
-  type        = string
-}
-
-variable "location" {
-  description = "The location of the virtual machine"
-  type        = string
+  description = "Name of the virtual machine"
 }
 
 variable "resource_group_name" {
-  description = "The name of the resource group"
   type        = string
+  description = "Target resource group name"
 }
 
-variable "subnet_id" {
-  description = "The subnet ID for the virtual machine"
+variable "snapshot_resource_group_name" {
   type        = string
+  description = "Resource group name where snapshots are stored"
 }
 
-variable "admin_username" {
-  description = "The admin username for the virtual machine"
+variable "location" {
   type        = string
+  description = "Azure region"
 }
 
-variable "admin_password" {
-  description = "The admin password for the virtual machine"
+variable "size" {
   type        = string
+  description = "Size of the virtual machine"
 }
 
-variable "os_disk_gb" {
-  description = "The size of the OS disk in GB"
-  type        = number
+variable "os_disk_snapshot_name" {
+  type        = string
+  description = "Name of the OS disk snapshot"
+}
+
+variable "os_disk_type" {
+  type        = string
+  description = "Storage account type for OS disk"
+  default     = "Standard_LRS"
+}
+
+variable "interfaces" {
+  type = list(object({
+    name                = string
+    ip_config_name     = string
+    subnet_id          = string
+    private_ip_address = optional(string)
+  }))
+  description = "Network interface configurations"
 }
 
 variable "data_disks" {
-  description = "List of data disks configurations"
   type = list(object({
-    disk_size_gb = number
+    name                = string
+    snapshot_name       = string
+    storage_account_type = string
+    lun                 = number
   }))
-  default = []
+  description = "Data disk configurations with snapshot names"
+  default     = []
+}
+
+variable "admin_username" {
+  type        = string
+  description = "Admin username for the VM"
+}
+
+variable "admin_password" {
+  type        = string
+  sensitive   = true
+  description = "Admin password for the VM"
+}
+
+variable "zone" {
+  type        = string
+  description = "Availability zone number"
+  default     = null
 }
 
 variable "tags" {
-  description = "Tags to be applied to the resources"
   type        = map(string)
+  description = "Tags to be applied to all resources"
+  default     = {}
 }

@@ -11,20 +11,49 @@ vm_username       = "vm-adminname"
 vm_admin_password_secret        = "vm-adminpassword"
 #vm_admin_username               = "adminuser"      # Replace with the actual admin username
 
+# terraform.tfvars
 vms = {
   "vm1" = {
-    name       = "webserver1"
-    size       = "Standard_B2s"
-    os_disk_gb = 128
-    tags       = { owner = "devops-team", role = "webserver", tier = "frontend" }
-  },
-  "vm2" = {
-    name       = "webserver2"
-    size       = "Standard_B2s"
-    os_disk_gb = 128
-    tags       = { role = "webserver", tier = "frontend" }
+    name                      = "migrated-vm1"
+    resource_group_name       = "target-rg"
+    snapshot_resource_group_name = "snapshot-rg"
+    location                  = "eastus"
+    size                      = "Standard_D2s_v3"
+    os_disk_snapshot_name     = "vm1-os-snapshot"
+    os_disk_type             = "Standard_LRS"
+    
+    interfaces = [
+      {
+        name                = "vm1-nic1"
+        ip_config_name     = "ipconfig1"
+        subnet_id          = "/subscriptions/.../subnet1"
+        private_ip_address = "10.0.1.10"
+      }
+    ]
+    
+    data_disks = [
+      {
+        name                = "vm1-data1"
+        snapshot_name       = "vm1-data1-snapshot"
+        storage_account_type = "Standard_LRS"
+        lun                 = 0
+      }
+    ]
+    
+    admin_username = "adminuser"
+    admin_password = "P@ssw0rd123!"
+    zone          = "1"
+    
+    tags = {
+      Environment = "Production"
+      MigratedFrom = "source-subscription"
+    }
   }
-
+  
+  "vm2" = {
+    # Similar configuration for second VM
+    # Add more VMs as needed
+  }
 }
 
 common_tags = {

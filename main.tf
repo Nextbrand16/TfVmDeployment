@@ -35,25 +35,31 @@ locals {
   Admin_password = data.azurerm_key_vault_secret.vm_admin_password.value
 }
 
-#git diff
-
+# main.tf
 module "vm" {
   source   = "./modules/vm"
   for_each = var.vms
 
-  name                = each.value.name
-  size                = each.value.size
-  location            = var.location
-  resource_group_name = module.resource_group.name
-  subnet_id           = data.azurerm_subnet.subnet.id
-  admin_username      = var.vm_username
-  admin_password      = local.Admin_password
-  os_disk_gb          = each.value.os_disk_gb
-  #data_disks          = each.value.data_disks
-  tags                = merge(module.common_tags.tags, each.value.tags)
-
-  depends_on = [module.resource_group]
+  name                      = each.value.name
+  resource_group_name       = each.value.resource_group_name
+  snapshot_resource_group_name = each.value.snapshot_resource_group_name
+  location                  = each.value.location
+  size                      = each.value.size
+  
+  os_disk_snapshot_name     = each.value.os_disk_snapshot_name
+  os_disk_type             = each.value.os_disk_type
+  
+  interfaces               = each.value.interfaces
+  data_disks              = each.value.data_disks
+  
+  admin_username          = each.value.admin_username
+  admin_password          = each.value.admin_password
+  
+  zone                    = each.value.zone
+  tags                    = each.value.tags
 }
+
+
 
 
 
