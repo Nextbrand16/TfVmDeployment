@@ -35,6 +35,8 @@ locals {
   Admin_password = data.azurerm_key_vault_secret.vm_admin_password.value
 }
 
+#git diff
+
 module "vm" {
   source   = "./modules/vm"
   for_each = var.vms
